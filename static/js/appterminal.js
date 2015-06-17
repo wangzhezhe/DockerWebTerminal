@@ -74,16 +74,22 @@ $(document).ready(function () {
           else{
             result = $.ajax({
               type: 'POST',
-              url: 'v1/terminal/checkimage' ,
+              url: 'teminal/checkimage' ,
               async: false,
               data: {imagename:args[0]} ,
               success: function(resp){
-                terminal.outputLine(resp.imagename);
-                socketConn(resp.imagename);
+			   //teminal.outputLine(resp);
+			   if (resp == "ok"){
+				socketConn(imagename);
+			}else{
+			  // console.log(resp);
+               terminal.outputLine(resp);
+			}
+			  
               },
             });
 
-            return "Image set: "+result;
+            //return "Image set: "+result;
           }
         }
         default:
@@ -208,6 +214,12 @@ $(document).ready(function () {
   });
   //    $('#debugbtn').click(function () {
   // });
+
+
+  $('#breakbtn').click(function () {
+	 console.log("test break");
+
+  });
 
   $('#generatebtn').click(function(){
 
