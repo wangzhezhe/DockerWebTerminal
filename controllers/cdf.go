@@ -99,7 +99,7 @@ func (o *CdfController) Get() {
 
 	fmt.Println("the containerid :", containerid)
 
-	command_commit := `docker commit ` + containerid + " wangzhe:latest" + strconv.Itoa(n)
+	command_commit := `docker commit ` + containerid + " dkt:latest" + strconv.Itoa(n)
 	cmd := exec.Command("/bin/sh", "-c", command_commit)
 	fmt.Println(command_commit)
 	var out bytes.Buffer
