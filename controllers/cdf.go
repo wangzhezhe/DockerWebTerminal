@@ -116,7 +116,7 @@ func (o *CdfController) Get() {
 
 	//command := `docker run -i wangzhe:latest` + strconv.Itoa(n) + ` /bin/bash -c "cat ~/.bash_history" > history.sh`
 	//command = command_commit + comman
-	command1 := `docker run -i wangzhe:latest` + strconv.Itoa(n) + ` /bin/bash -c "cat ~/.bash_history" > testhis.sh`
+	command1 := `docker run -i dkt:latest` + strconv.Itoa(n) + ` /bin/bash -c "cat ~/.bash_history" > testhis.sh`
 	//system(command)
 	system(command1)
 

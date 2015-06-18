@@ -29,6 +29,13 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/DWT/controllers:TeminalController"] = append(beego.GlobalControllerRouter["github.com/DWT/controllers:TeminalController"],
 		beego.ControllerComments{
+			"Break",
+			`/break`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["github.com/DWT/controllers:TeminalController"] = append(beego.GlobalControllerRouter["github.com/DWT/controllers:TeminalController"],
+		beego.ControllerComments{
 			"Get",
 			`/:baseimage`,
 			[]string{"get"},

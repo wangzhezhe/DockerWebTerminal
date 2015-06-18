@@ -15,4 +15,6 @@ todo:
 
 send the ctrl+c command
 
+update the transform tool of operation history
+
 modify the frontend

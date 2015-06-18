@@ -74,7 +74,7 @@ $(document).ready(function () {
           else{
             result = $.ajax({
               type: 'POST',
-              url: 'teminal/checkimage' ,
+              url: 'checkimage' ,
               async: false,
               data: {imagename:args[0]} ,
               success: function(resp){

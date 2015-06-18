@@ -10,9 +10,13 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 )
+
+var lastcpmmand string
+var ptyfile *os.File
 
 // Operations about Users
 type TeminalController struct {
@@ -36,7 +40,7 @@ func (o *TeminalController) Getpage() {
 		panic(err)
 	}
 	t.Execute(o.Ctx.ResponseWriter, nil)
-	//some err with template render in beego???
+	//some err with template render in beego??
 	//o.TplNames = "views/terminal.html"
 }
 
@@ -56,6 +60,22 @@ func (o *TeminalController) Check() {
 		return
 	}
 	o.Ctx.WriteString("ok")
+
+}
+
+// send break signal
+// ps -ax |grep -v grep |grep "bee run"| awk '{print $1} |head -1'
+// or pgrep
+
+// @Title send the break signal
+// @Description : send the break signal
+// @router /break [get]
+// problems in sending ctrl+c
+func (o *TeminalController) Break() {
+	//sent the int signal to the last command
+	fmt.Println("lastcommand:", lastcpmmand)
+	breakcommand := `kill 2 $(ps -ax |grep "` + lastcpmmand + `"| awk '{print $1}' |head -1)\n`
+	io.Copy(ptyfile, strings.NewReader(breakcommand))
 
 }
 
@@ -92,6 +112,7 @@ func (o *TeminalController) Get() {
 	//c := exec.Command("/bin/bash")
 	//	pty.Open()
 	f, err := pty.Start(c)
+	ptyfile = f
 	if err != nil {
 		panic(err)
 	}
@@ -109,6 +130,10 @@ func (o *TeminalController) Get() {
 			//write the command into the terminal
 
 			fmt.Println("input command:", string(p))
+
+			//store the last command
+			lastcpmmand = string(p)
+
 			p = append(p, 10)
 			io.Copy(f, strings.NewReader(string(p)))
 
