@@ -31,6 +31,7 @@ func system(s string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	//fmt.Println(string(out))
 	fmt.Printf("%s", out.String())
 }
 

@@ -13,7 +13,7 @@ generate the Dockerfile automatically accoring to the input history(basic)
 
 todo:
 
-send the ctrl+c command(plana:  use exec start a new terminal and send the sigin planb: kill the process in local machine be sure the process belong to docker )
+send the ctrl+c command(plana:  use exec start a new terminal (problems in exec docker exec command by sysexec maybe should have a pty) and send the sigin planb: kill the process in local machine be sure the process belong to docker )
 
 update the transform tool of operation history
 

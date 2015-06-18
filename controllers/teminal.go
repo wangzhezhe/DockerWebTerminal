@@ -24,6 +24,7 @@ type TeminalController struct {
 }
 
 var containerid = "null"
+var baseimage = null
 
 var wsmap_term = make(map[string]*websocket.Conn)
 
@@ -72,11 +73,8 @@ func (o *TeminalController) Check() {
 // @router /break [get]
 // problems in sending ctrl+c
 func (o *TeminalController) Break() {
-	//sent the int signal to the last command
-	fmt.Println("lastcommand:", lastcpmmand)
-	breakcommand := `kill 2 $(ps -ax |grep "` + lastcpmmand + `"| awk '{print $1}' |head -1)\n`
-	io.Copy(ptyfile, strings.NewReader(breakcommand))
-
+	//get the pid of /bin/bash
+	command := ``
 }
 
 // @Title testterm
@@ -84,7 +82,7 @@ func (o *TeminalController) Break() {
 // @Param	body		body 	models.User	true		"body for user content"
 // @router /:baseimage [get]
 func (o *TeminalController) Get() {
-	baseimage := o.GetString(":baseimage")
+	baseimage = o.GetString(":baseimage")
 	//if baseimage == "" {
 	//	http.Error(o.Ctx.ResponseWriter, "null image id", 400)
 	//	return
