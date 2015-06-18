@@ -2,16 +2,22 @@ package controllers
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/bitly/go-simplejson"
 	"github.com/fsouza/go-dockerclient"
 	"github.com/gorilla/websocket"
 	"github.com/kr/pty"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
+	"reflect"
+	"regexp"
+	//"strconv"
 	"strings"
 )
 
@@ -24,7 +30,7 @@ type TeminalController struct {
 }
 
 var containerid = "null"
-var baseimage = null
+var baseimage = "null"
 
 var wsmap_term = make(map[string]*websocket.Conn)
 
@@ -73,8 +79,61 @@ func (o *TeminalController) Check() {
 // @router /break [get]
 // problems in sending ctrl+c
 func (o *TeminalController) Break() {
+	fmt.Println(containerid)
+	if containerid == "null" {
+		fmt.Println("contianer not exist")
+		return
+	}
+
 	//get the pid of /bin/bash
-	command := ``
+	//command := `ps -ef|grep -v grep |grep "sudo docker run "`
+	file, err := os.Open("/var/lib/docker/containers/")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(file.Name())
+	//find the correct name by regex
+	tmpregxp := containerid + ".*"
+	fmt.Println("regx:", tmpregxp)
+	//regxp := "a66b9fb984.*"
+	names, _ := file.Readdirnames(0)
+	fullimagename := "null"
+	for _, name := range names {
+		m, _ := regexp.MatchString(tmpregxp, name)
+		if m {
+			fullimagename = name
+			break
+		}
+	}
+	fmt.Println(fullimagename)
+
+	fullpath := "/var/lib/docker/containers/" + fullimagename + "/config.json"
+
+	fmt.Println("filepath:", fullpath)
+
+	dat, err := ioutil.ReadFile(fullpath)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	js, err := simplejson.NewJson(dat)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	var configmap = make(map[string]interface{})
+	configmap, _ = js.Map()
+	//fmt.Println(configmap)
+	containerpid := configmap["State"].(map[string]interface{})["Pid"]
+	fmt.Println(reflect.TypeOf(containerpid))
+	fmt.Println(containerpid)
+	containerpid_int, _ := containerpid.(json.Number).Int64()
+
+	containerpid_str := fmt.Sprintf("%d", containerpid_int)
+
+	termcommand := `kill 2 $(ps -ef|grep -v grep |grep "` + lastcpmmand + `" |grep ` + containerpid_str + `  |awk '{print $2}')`
+	system(termcommand)
 }
 
 // @Title testterm
