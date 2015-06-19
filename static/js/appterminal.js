@@ -99,7 +99,8 @@ $(document).ready(function () {
     }
   });
 
-  terminal.outputLine("Specify a image first, eg. ubuntu");
+  terminal.outputLine("Input the baseimage on your host which you want to connect");
+terminal.outputLine("for example ,input: image ubuntu:latest ")
 
   var socketConn = function( imaganame ){
     socket = new WebSocket("ws://" + url_websocket + "/v1/teminal/" + imaganame);
@@ -218,6 +219,10 @@ $(document).ready(function () {
 
   $('#breakbtn').click(function () {
 	 console.log("test break");
+	$.ajax({
+     type: 'GET',
+     url: "/v1/teminal/break" ,
+});
 
   });
 

@@ -1,7 +1,7 @@
 ls
-vim sth
-apt-get sth
-cd home
-cd /
+cd bin
 ls
+cd ..
+ls
+tail -f
 exit
