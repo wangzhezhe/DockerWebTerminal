@@ -1,8 +1,8 @@
 # DockerWebTerminal
-a web terminal of docker container based beego and pty
+###a web terminal of docker container based beego and pty
 
 
-already done:
+###already done:
 
 choose the base image
 
@@ -13,7 +13,7 @@ connect to the container terminal from browser
 generate the Dockerfile automatically accoring to the input history(basic)
 
 
-todo:
+###todo:
 
 update ctrl+c (kill 2 all the process which ppid is the container not only the latest one)
 
